@@ -201,6 +201,21 @@ paths:
         "401":
           description: coach doesnt found
 
+  /league/currSeasonTeams:
+    get:
+      summary: get the teams info Array in the currect season in SUPERLIGA
+      description: get the teams in the currect season 
+       responses:
+        "200":
+          description: teams array found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/League"
+        "401":
+          description: teams array doesnt found
+  
+
 components:
   schemas:
     User:
