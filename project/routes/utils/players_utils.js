@@ -34,16 +34,14 @@ async function getPlayersInfo(players_ids_list) {
       })
     )
   );
-  let players_info = await Promise.all(promises);
-  console.log(players_info);
-  return await extractRelevantPlayerData(players_info);
+  const players_info = await Promise.all(promises);
+  return extractRelevantPlayerData(players_info);
 }
 
  function extractRelevantPlayerData(players_info) {
+  
   return players_info.map((player_info) => {
-    console.log(player_info.data.data);
     const { fullname, image_path, position_id } = player_info.data.data;
-    
     const { name } = player_info.data.data.team.data;
     return {
       name: fullname,
