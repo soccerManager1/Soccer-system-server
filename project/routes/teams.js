@@ -27,7 +27,7 @@ router.get("/teamFullDetails/:teamId", async (req, res, next) => {
 
     if (sorted)
       team_players = sortPlayers(team_players);
-    
+    //this function sort the players
     
 
     //we should keep implementing team page.....
