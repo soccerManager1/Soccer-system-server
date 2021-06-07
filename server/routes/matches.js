@@ -80,28 +80,7 @@ router.get("/allSeasonGames/:teamName", async (req, res, next) => {
     }
   });
 
-   router.get("/futureSeasonGames/:teamName", async (req, res, next) => {
-    
-    try {
-    const teamName = req.params.teamName;
-    const matches = await  matches_utils.getFutureGames( teamName );
-    res.status(200).send(matches);
 
-    } catch (error) {
-      next(error);
-    }
-  });
-
-  router.post("/find", async (req, res, next) => {
-    try {
-    const gameDetails = req.body;
-    bool = await  matches_utils.addFutureGame( gameDetails );
-    res.status(200).send(matches);
-
-    } catch (error) {
-      next(error);
-    }
-  });
 
 
 module.exports = router;

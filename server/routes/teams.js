@@ -15,7 +15,7 @@ function sortPlayers(players){
   return players;
 }
 
-router.get("/teamFullDetails/:teamId", async (req, res, next) => {
+router.post("/teamFullDetails/:teamId", async (req, res, next) => {
   const sorted = req.body.sorted;
   const filter = req.body.filter;
   let team_details = [];
