@@ -35,6 +35,14 @@ async function registerUser(username,firstname, lastname, country, hash_password
     return true;
   }
 
+  async function registerUserReferees(username,firstname, lastname, country, hash_password,imageUrl, email){
+    await DButils.execQuery(
+      `INSERT INTO dbo.Referees (username, firstname ,lastname ,country , password, email,image_url)
+       VALUES ('${username}','${firstname}','${lastname}','${country}', '${hash_password}','${email}','${imageUrl}')`
+    );
+    return true;
+  }
+
   async function getUserInfoByName(username){
     const user = (
         await DButils.execQuery(
@@ -76,7 +84,7 @@ async function getFavoriteMatches(user_id){
 
 
 
-
+exports.registerUserReferees = registerUserReferees;
 exports.getFavoriteMatches = getFavoriteMatches;
 exports.insertfavoriteMatches = insertfavoriteMatches;
 exports.insertFavoritePlayers = insertFavoritePlayers;

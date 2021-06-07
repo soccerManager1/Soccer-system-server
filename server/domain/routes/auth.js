@@ -20,9 +20,7 @@ router.post("/Register", async (req, res, next) => {
       }
     }
     const isReferee = req.query.isReferee;
-    const users = await DButils.execQuery(
-      "SELECT username FROM dbo.users"
-    );
+    const users = users_access.getUserNames()
     
     if (users.find((x) => x.username === username))
       throw { status: 409, message: "Username taken" };
@@ -37,16 +35,10 @@ router.post("/Register", async (req, res, next) => {
     // add the new username
 
     if (!isReferee){
-      await DButils.execQuery(
-        `INSERT INTO dbo.users (username, firstname ,lastname ,country , password, email,image_url)
-         VALUES ('${username}','${firstname}','${lastname}','${country}', '${hash_password}','${email}','${imageUrl}')`
-      );
+      const res = users_access.registerUser(username,firstname, lastname, country, hash_password,imageUrl, email)
     }
     else{
-      await DButils.execQuery(
-        `INSERT INTO dbo.Referees (username, firstname ,lastname ,country , password, email,image_url)
-         VALUES ('${username}','${firstname}','${lastname}','${country}', '${hash_password}','${email}','${imageUrl}')`
-      );
+      const res = users_access.registerUserReferees(username,firstname, lastname, country, hash_password,imageUrl, email)
     }
   
     res.status(201).send("user created");
