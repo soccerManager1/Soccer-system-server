@@ -12,14 +12,14 @@ router.post("/Register", async (req, res, next) => {
     // valid parameters
     // username exists
 
-    const { username, firstname , lastname, country, password, email, imageUrl ,isReferee } = req.body;
+    const { username, firstname , lastname, country, password, email, imageUrl  } = req.body;
     if (!username || !firstname || !lastname || !country || !password || !email || !imageUrl){
       throw {
         status: 400,
         massege: "all parameters are requird!"
       }
     }
-
+    const isReferee = req.query.isReferee;
     const users = await DButils.execQuery(
       "SELECT username FROM dbo.users"
     );
@@ -36,7 +36,7 @@ router.post("/Register", async (req, res, next) => {
 
     // add the new username
 
-    if (isReferee){
+    if (!isReferee){
       await DButils.execQuery(
         `INSERT INTO dbo.users (username, firstname ,lastname ,country , password, email,image_url)
          VALUES ('${username}','${firstname}','${lastname}','${country}', '${hash_password}','${email}','${imageUrl}')`

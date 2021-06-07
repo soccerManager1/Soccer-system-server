@@ -43,7 +43,6 @@ export type Coach = {
     nationality: string,
 }
 
-
 export type Player = {
     name: string,
     nationality: string,
@@ -58,9 +57,11 @@ export type Player = {
 
 export type ApiClient = {
 
-    register: (user: User) => Promise<String>;
+    register: (user: User, isReferee: boolean) => Promise<String>;
 
-    login: (user: User) => Promise<string>;
+    logout: () => Promise<String>;
+
+    login: (username: string , password: string) => Promise<string>;
 	
 	teamFullDetails: (teamId: number) => Promise<Team>;
 		
@@ -86,8 +87,12 @@ export type ApiClient = {
 
 export const createApiClient = (): ApiClient => {
 	return {
-        register: (user: User) => {
-			return axios.post(`http://localhost:3000/Register`,{
+        logout: () => {
+			return axios.post(`http://localhost:3000/Logout`).then((res) => res.data);
+		},
+
+        register: (user: User,  isReferee: boolean) => {
+			return axios.post(`http://localhost:3000/Register?isReferee=${isReferee}`,{
                 username: user.username,
                 firstname: user.firstname,
                 lastname: user.lastname,
@@ -95,12 +100,14 @@ export const createApiClient = (): ApiClient => {
                 password: user.password,
                 email: user.email,
                 imageUrl: user.image_url,
-                isReferee: user.isReferee,
 
             }).then((res) => res.data);
 		},
-        login: (user: User) => {
-			return axios.post(`http://localhost:3000/teams/teamFullDetails/${teamId}`,{sorted: String, filter: String}).then((res) => res.data);
+        login: (username: string , password: string) => {
+			return axios.post(`http://localhost:3000/Login`,{
+                username: username,
+                password: password,
+            }).then((res) => res.data);
 		},
 
 		teamFullDetails: (teamId: number) => {
