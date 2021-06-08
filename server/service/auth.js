@@ -3,44 +3,77 @@ var router = express.Router();
 const DButils = require("../domain/routes/DButils");
 const bcrypt = require("bcryptjs");
 const users_access = require("../data/userAccess")
+const users_utils = require("../domain/routes/users_utils")
 require("dotenv").config();
 
+//middleware
+router.use("/Register", async function (req, res, next) {
+
+
+ console.log("in the middleware")
+
+  // parameters exists
+  // valid parameters
+  
+ console.log(req.body)
+ const { username, firstname , lastname, country, password, email, imageUrl, type} = req.body;
+ if (!username || !firstname || !lastname || !country || !password || !email || !imageUrl || !type){
+   throw {
+     status: 400,
+     massege: "all parameters are requird!"
+   }
+ }
+  // valide type
+ if( type!="regular" && type!="referee"){
+  throw {
+    status: 400,
+    massege: "invalid user type "
+  }
+ }
+ 
+const all_users = await users_access.getUserNames();
+console.log(all_users);
+try{
+  if ( all_users.find((x) => x.username === username))
+    throw { status: 409, message: "Username taken" };
+}
+
+catch (error) {
+ next(error);
+}
+
+ if(type=="referee"){
+   //admin user loggin
+   try{
+      if(!req.session || !req.session.user_id)
+        throw { status: 401, message: "please login before trying the following request" };
+
+      if( users_utils.isUserAdmin(req.session.user_id) == false)
+        throw { status: 403, message: "no premission to do the following requste" };
+   }
+
+   catch (error) {
+    next(error);
+  }
+ }
+ next();
+
+});
 
 router.post("/Register", async (req, res, next) => {
   try {
-    // parameters exists
-    // valid parameters
-    // username exists
+    console.log("in the function")
 
-    const { username, firstname , lastname, country, password, email, imageUrl  } = req.body;
-    if (!username || !firstname || !lastname || !country || !password || !email || !imageUrl){
-      throw {
-        status: 400,
-        massege: "all parameters are requird!"
-      }
-    }
-    const isReferee = req.query.isReferee;
-    const users = users_access.getUserNames()
-    
-    if (users.find((x) => x.username === username))
-      throw { status: 409, message: "Username taken" };
+
+    const { username, firstname , lastname, country, password, email, imageUrl,type  } = req.body;
 
     //hash the password
-    let hash_password = bcrypt.hashSync(
-      password,
-      parseInt(process.env.bcrypt_saltRounds)
-    );
+    let hash_password = bcrypt.hashSync(password,parseInt(process.env.bcrypt_saltRounds));
     req.body.password = hash_password;
-
+    
     // add the new username
-
-    if (!isReferee){
-      const res = users_access.registerUser(username,firstname, lastname, country, hash_password,imageUrl, email)
-    }
-    else{
-      const res = users_access.registerUserReferees(username,firstname, lastname, country, hash_password,imageUrl, email)
-    }
-  
+    const result = await users_access.registerUser(username,firstname, lastname, country, hash_password,imageUrl, email,type)
+    
     res.status(201).send("user created");
   } catch (error) {
     next(error);
@@ -49,7 +82,9 @@ router.post("/Register", async (req, res, next) => {
 
 router.post("/Login", async (req, res, next) => {
   try {
-    const user = users_access.getUserInfoByName(req.body.username);
+    console.log(req.body)
+    const user = await users_access.getUserInfoByName(req.body.username);
+    console.log(user)
 
     // check that username exists & the password is correct
     if (!user || !bcrypt.compareSync(req.body.password, user.password)) {
@@ -57,7 +92,7 @@ router.post("/Login", async (req, res, next) => {
     }
 
     // Set cookie
-    req.session.user_id = user.user_id;
+    req.session.user_id = user.username;
 
     // return cookie
     res.status(200).send("login succeeded");

@@ -25,7 +25,7 @@ async function addFutureGame(gameDetails){
    
 }
 
-function compareDates( date,hour ){
+function compareDates( date,hour){
     const today = new Date();
     const dateToday = today.toLocaleDateString();
     const hourToday =  today.toLocaleTimeString();

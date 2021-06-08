@@ -22,7 +22,6 @@ router.use(async function (req, res, next) {
 });
 
 
-
 /**
  * This path gets body with playerId and save this player in the favorites list of the logged-in user
  */

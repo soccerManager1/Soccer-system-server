@@ -22,6 +22,14 @@ async function getFavoriteMatches(user_id) {
   return match_ids;
 }
 
+async function isUserAdmin(userName) {
+  const user=users_access.getUserInfoByName(userName)
+  if(user.type=='admin')
+    return true;
+  return false;
+}
+
+exports.isUserAdmin = isUserAdmin;
 exports.markMatchAsFavorite = markMatchAsFavorite;
 exports.getFavoriteMatches = getFavoriteMatches;
 exports.markPlayerAsFavorite = markPlayerAsFavorite;

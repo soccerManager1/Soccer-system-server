@@ -2,7 +2,7 @@ const DButils = require("../domain/routes/DButils");
 
 async function getUsersId(){
     const users_id = (await DButils.execQuery(
-        "SELECT user_id FROM dbo.Users "
+        "SELECT user_id FROM dbo.users "
       )
     );
 
@@ -18,28 +18,12 @@ async function getUserNames(){
     return users_names;
 }
 
-async function getUserNames(){
-    const users_names = (await DButils.execQuery(
-        "SELECT username FROM dbo.users"
-      )
-    );
 
-    return users_names;
-}
-
-async function registerUser(username,firstname, lastname, country, hash_password,imageUrl, email){
+async function registerUser(username,firstname, lastname, country, hash_password,imageUrl, email, type){
     await DButils.execQuery(
-        `INSERT INTO dbo.users (username, firstname ,lastname ,country , password, email,image_url)
-         VALUES ('${username}','${firstname}','${lastname}','${country}', '${hash_password}','${email}','${imageUrl}')`
+        `INSERT INTO dbo.users (username, firstname ,lastname ,country , password, email,image_url,type)
+         VALUES ('${username}','${firstname}','${lastname}','${country}', '${hash_password}','${email}','${imageUrl}','${type}')`
       );
-    return true;
-  }
-
-  async function registerUserReferees(username,firstname, lastname, country, hash_password,imageUrl, email){
-    await DButils.execQuery(
-      `INSERT INTO dbo.Referees (username, firstname ,lastname ,country , password, email,image_url)
-       VALUES ('${username}','${firstname}','${lastname}','${country}', '${hash_password}','${email}','${imageUrl}')`
-    );
     return true;
   }
 
@@ -84,7 +68,7 @@ async function getFavoriteMatches(user_id){
 
 
 
-exports.registerUserReferees = registerUserReferees;
+
 exports.getFavoriteMatches = getFavoriteMatches;
 exports.insertfavoriteMatches = insertfavoriteMatches;
 exports.insertFavoritePlayers = insertFavoritePlayers;
