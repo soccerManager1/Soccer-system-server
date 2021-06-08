@@ -1,10 +1,10 @@
-const app = require('../main')
+
+const request = require('supertest');
 var server = request.agent('http://localhost:3000');
 require("dotenv").config();
 
-//bad Authentication
+//non existing user or passwords
 describe("bad Authentication",() =>{
-
 
     test("Bad userName", async ()=>{
         res= await server.post("/Login").send({
@@ -12,16 +12,16 @@ describe("bad Authentication",() =>{
             password: "pass123"
         });
         expect(res.statusCode).toBe(401);
-    },3000)
+    },40000);
 
 
     test("bad password", async()=>{
         res= await server.post("/Login").send({
-            username: "Adir",
-            password: "badpassword"
+            username: "adir",
+            password: "marom"
         });
         expect(res.statusCode).toBe(401);
-    })
+    },40000);
 
 
     //empty parametres
@@ -31,28 +31,28 @@ describe("bad Authentication",() =>{
             password: ""
         });
         expect(res.statusCode).toBe(401);
-    })
-})
+    },40000);
+});
 
 //correct Authentication
 describe("Correct Authentication",() =>{
 
     test("Correct Authentication", async () =>{
         res= await server.post("/Login").send({
-            username: "Adir",
-            password: "Marom123"
+            username: "adir",
+            password: "marom456"
         });
         expect(res.statusCode).toBe(200);
-    },3000)
-})
+    },40000);
+});
 
 
-describe("log out test", ()=>{
-    test("Succesfull logout", async()=>{
-        res=await server.post("/Logout");
-        expect(res.message.localeCompare("logout succeeded")===true);
-    },3000)
-})
+//describe("log out test", ()=>{
+//    test("Succesfull logout", async()=>{
+//        res=await server.post("/Logout");
+//        expect(res.message.localeCompare("logout succeeded")===0);
+//    },40000)
+//})
 
 
 // Register Accpetence 
@@ -61,16 +61,16 @@ describe("Good Register",() =>{
 
     test("Correct Register", async () =>{
         res= await server.post("/Register").send({
-            username: "Adir12",
-            firstname: "adir",
-            lastname : "marom",
-            country : "Israel",
-            password: "Marom123",
-            email: "adir@gmail.com",
-            imageUrl: "http://google.photos.myphoto=?adir?query=1"
+        username: "adir",
+        firstname: "adir",
+        lastname:"marom",
+        country: "Yemen",
+        password : "marom4567",
+        email: "adir@gmail.com",
+        imageUrl : "http://google.photos.myphoto=?adir?query=1"
         });
         expect(res.statusCode).toBe(200);
-    },3000)
+    },40000);
 
-})
+});
 
