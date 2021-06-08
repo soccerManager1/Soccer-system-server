@@ -17,8 +17,14 @@ router.use("/addFutureGame", async function (req, res, next) {
    // valid parameters
    
   console.log(req.body)
-  const [ID , date, time, homeTeam, awayTeam, referee, stadium] = req.body;
-
+  const ID = req.body.ID;
+  const date = req.body.date;
+  const time = req.body.time;
+  const homeTeam = req.body.homeTeam;
+  const awayTeam = req.body.awayTeam;
+  const referee = req.body.referee;
+  const stadium = req.body.stadium;
+  
   if (!ID || !date || !time || !homeTeam || !awayTeam || !referee || !stadium ){
     throw {
       status: 400,
@@ -33,7 +39,7 @@ router.use("/addFutureGame", async function (req, res, next) {
      massege: " invalid date "
    }
   }
-
+  
   const Hteam = await league_utils.getTeamByName(homeTeam); // check if Home team exist
   const Ateam = await league_utils.getTeamByName(awayTeam); // check if Away team exist
 
@@ -45,8 +51,9 @@ router.use("/addFutureGame", async function (req, res, next) {
   }
 
   const all_users = await users_access.getUserNames();
+  console.log(all_users)
   try{
-    if ( all_users.find((x) => x.username !== referee))
+    if ( !(all_users.find((x) => x.username === referee)))
       throw { status: 409, message: "invalid referee name" };
   }
 
@@ -61,10 +68,10 @@ next();
 
 router.post("/addFutureGame", async (req, res, next) => {
   try {
-  
+  console.log("in the funccccccccccccccc")
   const gameDetails = req.body;
-  bool = await  matches_utils.addFutureGame( gameDetails );
-  res.status(200).send(matches);
+  bool = await matches_utils.addFutureGame( gameDetails );
+  res.status(200).send("game added successfully");
 
   } catch (error) {
     next(error);

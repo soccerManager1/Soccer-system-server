@@ -19,10 +19,15 @@ async function getGames(teamName){
 
 async function addFutureGame(gameDetails){
     if (!gameDetails){return;}
-    const [ID , date, time, homeTeam, awayTeam, referee, stadium] = gameDetails;
-      
-    return matches_access.insertFutureGame(ID,date, time, homeTeam, awayTeam,awayTeam,referee, stadium);
-   
+    const ID = gameDetails.ID;
+    const date = gameDetails.date;
+    const time = gameDetails.time;
+    const homeTeam = gameDetails.homeTeam;
+    const awayTeam = gameDetails.awayTeam;
+    const referee = gameDetails.referee;
+    const stadium = gameDetails.stadium; 
+    return await matches_access.insertFutureGame(ID,date, time, homeTeam, awayTeam,awayTeam,referee, stadium);
+
 }
 
 function compareDates( date,hour){

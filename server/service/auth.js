@@ -13,7 +13,6 @@ require("dotenv").config();
 router.use("/Register", async function (req, res, next) {
 
 
-
  console.log("in the middleware")
 
   // parameters exists
