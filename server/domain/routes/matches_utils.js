@@ -19,9 +19,9 @@ async function getGames(teamName){
 
 async function addFutureGame(gameDetails){
     if (!gameDetails){return;}
-    const [ID , date, time, homeTeam, awayTeam, stadium] = gameDetails;
+    const [ID , date, time, homeTeam, awayTeam, referee, stadium] = gameDetails;
       
-    return matches_access.insertFutureGame(ID,date, time, homeTeam, awayTeam,awayTeam, stadium);
+    return matches_access.insertFutureGame(ID,date, time, homeTeam, awayTeam,awayTeam,referee, stadium);
    
 }
 
