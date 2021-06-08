@@ -4,7 +4,13 @@
   "description": "",
   "main": "project\\main.js",
   "scripts": {
-    "test": "jest"
+    "test": "jest",
+    "b": "npm run bootstrap",
+    "bootstrap": "lerna bootstrap",
+    "start-server": "nodemon server/main.js",
+    
+    "start-client": "start cmd.exe @cmd /k \"cd client\" && npm run serve\"",
+    "postinstall": "npm run bootstrap"
   },
   "repository": {
     "type": "git",
