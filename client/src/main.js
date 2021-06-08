@@ -1,16 +1,4 @@
-//import Vue from 'vue'
-//import App from './App.vue'
-//
-//Vue.config.productionTip = false
-//
-//new Vue({
-//  render: h => h(App),
-//}).$mount('#app'
-//const readline = require("readline");
-//const rl = readline.createInterface({
-//    input: process.stdin,
-//    output: process.stdout
-//});
+
 
 const { Console } = require('console')
 const  api  = require('../api')
