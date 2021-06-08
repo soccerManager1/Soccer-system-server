@@ -1,5 +1,5 @@
 //#region global imports
-const DButils = require("./routes/utils/DButils");
+const DButils = require("../domain/routes/DButils");
 const axios = require("axios");
 const bcrypt = require("bcryptjs");
 require("dotenv").config();
@@ -50,13 +50,13 @@ app.options("*", cors(corsConfig));
 
 const port = process.env.PORT || "3000";
 
-const auth = require("./routes/auth");
-const users = require("./routes/users");
-const league = require("./routes/league");
-const teams = require("./routes/teams");
-const players = require("./routes/players");
-const matches = require("./routes/matches");
-const coaches = require("./routes/coaches");
+const auth = require("../service/auth");
+const users = require("../service/users");
+const league = require("../service/league");
+const teams = require("../service/teams");
+const players = require("../service/players");
+const matches = require("../service/matches");
+const coaches = require("../service/coaches");
 //#endregion
 
 //#region cookie middleware

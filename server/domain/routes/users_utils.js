@@ -1,5 +1,5 @@
 const DButils = require("./DButils");
-const users_access = require("../data/userAccess")
+const users_access = require("../../data/userAccess.js")
 
 async function markPlayerAsFavorite(user_id, player_id) {
   const res=users_access.insertFavoritePlayers(user_id,player_id)

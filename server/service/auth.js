@@ -1,6 +1,6 @@
 var express = require("express");
 var router = express.Router();
-const DButils = require("./utils/DButils");
+const DButils = require("../domain/routes/DButils");
 const bcrypt = require("bcryptjs");
 const users_access = require("../data/userAccess")
 require("dotenv").config();

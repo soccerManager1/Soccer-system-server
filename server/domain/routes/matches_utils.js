@@ -1,7 +1,7 @@
 const axios = require("axios");
 const api_domain = "https://soccer.sportmonks.com/api/v2.0";
 const DButils = require("./DButils");
-const matches_access = require("../data/matchesAccess")
+const matches_access = require("../../data/matchesAccess")
 
 
 async function getGames(teamName){

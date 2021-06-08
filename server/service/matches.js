@@ -1,8 +1,8 @@
 var express = require("express");
 var router = express.Router();
-const DButils = require("./utils/DButils");
-const players_utils = require("./utils/players_utils");
-const matches_utils = require("./utils/matches_utils");
+const DButils = require("../domain/routes/DButils");
+const players_utils = require("../domain/routes/players_utils");
+const matches_utils = require("../domain/routes/matches_utils");
 
 
 router.get("/allSeasonGames/:teamName", async (req, res, next) => {

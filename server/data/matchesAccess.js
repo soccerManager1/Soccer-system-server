@@ -1,4 +1,4 @@
-const DButils = require("./utils/DButils");
+const DButils = require("../domain/routes/DButils");
 
 async function getAllMatches(teamName){
     const matches = await DButils.execQuery(

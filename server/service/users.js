@@ -1,9 +1,9 @@
 var express = require("express");
 var router = express.Router();
-const DButils = require("./utils/DButils");
-const users_utils = require("./utils/users_utils");
-const players_utils = require("./utils/players_utils");
-const matches_utils = require("./utils/matches_utils");
+const DButils = require("../domain/routes/DButils");
+const users_utils = require("../domain/routes/users_utils");
+const players_utils = require("../domain/routes/players_utils");
+const matches_utils = require("../domain/routes/matches_utils");
 const users_access = require("../data/userAccess")
 
 /**

@@ -1,7 +1,7 @@
 var express = require("express");
 var router = express.Router();
-const DButils = require("./utils/DButils");
-const coach_utils = require("./utils/coaches_utils");
+const DButils = require("../domain/routes/DButils");
+const coach_utils = require("../domain/routes/coaches_utils");
 
 
 router.get("/getCoach/:coachId", async (req, res, next) => {

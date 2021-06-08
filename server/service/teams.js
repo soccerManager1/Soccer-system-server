@@ -1,8 +1,8 @@
 var express = require("express");
 var router = express.Router();
-const DButils = require("./utils/DButils");
-const players_utils = require("./utils/players_utils");
-const coach_utils = require("./utils/coaches_utils");
+const DButils = require("../domain/routes/DButils");
+const players_utils = require("../domain/routes/players_utils");
+const coach_utils = require("../domain/routes/coaches_utils");
 
 
 function sortPlayers(players){
@@ -16,6 +16,7 @@ function sortPlayers(players){
 }
 
 router.get("/teamFullDetails/:teamId", async (req, res, next) => {
+  console.log("***************************************************************")
   const sorted = req.body.sorted;
   const filter = req.body.filter;
   let team_details = [];
