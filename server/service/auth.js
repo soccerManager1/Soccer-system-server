@@ -6,17 +6,30 @@ const users_access = require("../data/userAccess")
 const users_utils = require("../domain/routes/users_utils")
 require("dotenv").config();
 
+
+
+
 //middleware
 router.use("/Register", async function (req, res, next) {
+
 
 
  console.log("in the middleware")
 
   // parameters exists
   // valid parameters
-  
- console.log(req.body)
- const { username, firstname , lastname, country, password, email, imageUrl, type} = req.body;
+  console.log(req.body);
+  const type=req.body.type; 
+  const username=req.body.username;
+  const firstname=req.body.firstname;
+  const lastname=req.body.lastname;
+  const country=req.body.country;
+  const password=req.body.password;
+  const email=req.body.email;
+  const imageUrl=req.body.imageUrl;
+  try{
+
+
  if (!username || !firstname || !lastname || !country || !password || !email || !imageUrl || !type){
    throw {
      status: 400,
@@ -24,16 +37,18 @@ router.use("/Register", async function (req, res, next) {
    }
  }
   // valide type
+  console.log(type)
  if( type!="regular" && type!="referee"){
   throw {
     status: 400,
     massege: "invalid user type "
   }
  }
- 
+
+ console.log(type)
 const all_users = await users_access.getUserNames();
 console.log(all_users);
-try{
+
   if ( all_users.find((x) => x.username === username))
     throw { status: 409, message: "Username taken" };
 }
@@ -41,23 +56,21 @@ try{
 catch (error) {
  next(error);
 }
-
+try{
  if(type=="referee"){
    //admin user loggin
-   try{
+
       if(!req.session || !req.session.user_id)
         throw { status: 401, message: "please login before trying the following request" };
 
       if( users_utils.isUserAdmin(req.session.user_id) == false)
         throw { status: 403, message: "no premission to do the following requste" };
    }
-
+  }
    catch (error) {
     next(error);
   }
- }
  next();
-
 });
 
 router.post("/Register", async (req, res, next) => {

@@ -9,7 +9,7 @@ export type User = {
     password: string;
     email: string;
     image_url: string;
-    isReferee: boolean
+    type: string;
 }
 
 export type League = {
@@ -95,7 +95,7 @@ export const createApiClient = (): ApiClient => {
                 password: user.password,
                 email: user.email,
                 imageUrl: user.image_url,
-                isReferee: user.isReferee,
+                type: user.type,
 
             }).then((res) => res.data);
 		},
@@ -152,3 +152,6 @@ export const createApiClient = (): ApiClient => {
 
 	}
 };
+
+
+exports.createApiClient=createApiClient;
