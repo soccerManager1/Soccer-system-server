@@ -4,6 +4,17 @@ const DButils = require("../domain/routes/DButils");
 const players_utils = require("../domain/routes/players_utils");
 const coach_utils = require("../domain/routes/coaches_utils");
 
+async function getTeamByName(teamName){
+  if(!teamName){return}
+  
+  const res = await axios.get(`${api_domain}/teams/search/${teamName}`, {
+    params: {
+      api_token: process.env.api_token,
+    },
+  });
+  return res.data;
+}
+
 
 function sortPlayers(players){
   if (!player){return}
@@ -16,7 +27,6 @@ function sortPlayers(players){
 }
 
 router.get("/teamFullDetails/:teamId", async (req, res, next) => {
-  console.log("***************************************************************")
   const sorted = req.body.sorted;
   const filter = req.body.filter;
   let team_details = [];

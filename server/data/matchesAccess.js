@@ -20,10 +20,11 @@ async function getMatchesById(match_id){
 }
 
 
-async function insertFutureGame(ID,date, time, homeTeam, awayTeam,awayTeam, stadium){
+async function insertFutureGame(ID,date, time, homeTeam, awayTeam, referee, stadium){
+
     await DButils.execQuery(
-        `INSERT INTO dbo.Matches (ID,date , time, homeTeam, awayTeam, stadium)
-         VALUES ( '${ID}','${date}' , '${time}' , '${homeTeam}', '${awayTeam}', '${stadium}')`
+        `INSERT INTO dbo.Matches (ID,date , time, homeTeam, awayTeam, referee , stadium)
+         VALUES ( '${ID}','${date}' , '${time}' , '${homeTeam}', '${awayTeam}','${referee}', '${stadium}')`
     );
     
     return true;
