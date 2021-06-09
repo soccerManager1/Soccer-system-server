@@ -47,11 +47,11 @@ router.use("/Register", async function (req, res, next) {
  }
 
  console.log(type)
-const all_users = await users_access.getUserNames();
+const all_users = await users_utils.getUserNames();
 console.log(all_users);
 
   if ( all_users.find((x) => x.username === username))
-    throw { status: 409, message: "Username taken" };
+    throw { status: 409, message: " username already exist" };
 }
 
 catch (error) {
@@ -112,7 +112,7 @@ router.post("/Login", async (req, res, next) => {
     console.log(req.session);
 
     // return cookie
-    res.status(200).send("login succeeded");
+    res.status(201).send("login succeeded");
   } catch (error) {
     next(error);
   }
