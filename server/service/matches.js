@@ -10,8 +10,6 @@ const users_access = require("../data/userAccess");
 
 //middlewhere for add future games
 router.use("/addFutureGame", async function (req, res, next) {
-
-  console.log("in the middleware")
  
    // parameters exists
    // valid parameters
@@ -68,9 +66,78 @@ next();
 
 router.post("/addFutureGame", async (req, res, next) => {
   try {
-  console.log("in the funccccccccccccccc")
   const gameDetails = req.body;
   bool = await matches_utils.addFutureGame( gameDetails );
+  res.status(200).send("game added successfully");
+
+  } catch (error) {
+    next(error);
+  }
+});
+
+
+router.use("/addPastGame", async function (req, res, next) {
+ 
+  // parameters exists
+  // valid parameters
+  
+ const ID = req.body.ID;
+ const date = req.body.date;
+ const time = req.body.time;
+ const homeTeam = req.body.homeTeam;
+ const awayTeam = req.body.awayTeam;
+ const referee = req.body.referee;
+ const stadium = req.body.stadium;
+ const scoreHome = req.body.scoreHome;
+ const scoreAway = req.body.scoreAway;
+ const events = req.body.events;
+ 
+ if (!ID || !date || !time || !homeTeam || !awayTeam || !referee || !stadium || !scoreHome || !scoreAway || !events ){
+   throw {
+     status: 400,
+     massege: "all parameters are requird!"
+   }
+ }
+ //check if is future game
+ var today = new Date();
+ if( date > today.getDate() ){
+  throw {
+    status: 400,
+    massege: " invalid date "
+  }
+ }
+ 
+ const Hteam = await league_utils.getTeamByName(homeTeam); // check if Home team exist
+ const Ateam = await league_utils.getTeamByName(awayTeam); // check if Away team exist
+
+ if (!Hteam || !Ateam){
+   throw {
+     status: 400,
+     massege: " invalid teams names "
+   }
+ }
+
+ const all_users = await users_access.getUserNames();
+ console.log(all_users)
+ try{
+   if ( !(all_users.find((x) => x.username === referee)))
+     throw { status: 409, message: "invalid referee name" };
+ }
+
+ catch (error) {
+  next(error);
+ }
+
+next();
+
+});
+
+
+
+router.post("/addPastGame", async (req, res, next) => {
+  try {
+  const gameDetails = req.body;
+  bool = await matches_utils.addPastGame( gameDetails );
   res.status(200).send("game added successfully");
 
   } catch (error) {

@@ -19,6 +19,16 @@ async function getMatchesById(match_id){
     return match
 }
 
+async function insertPastGame(ID,date, time, homeTeam, awayTeam, referee, stadium,scoreHome, scoreAway, events){
+
+    await DButils.execQuery(
+        `INSERT INTO dbo.Matches (ID,date , time, homeTeam, awayTeam, referee , stadium, scoreHome,scoreAway, events )
+         VALUES ( '${ID}','${date}' , '${time}' , '${homeTeam}', '${awayTeam}','${referee}', '${stadium}', '${scoreHome}', '${scoreAway}', '${events}')`
+    );
+    
+    return true;
+  }
+
 
 async function insertFutureGame(ID,date, time, homeTeam, awayTeam, referee, stadium){
 
@@ -50,6 +60,7 @@ async function updateMatchEvents(match_id, events){
     return true;
 }
 
+exports.insertPastGame = insertPastGame;
 exports.getAllMatches = getAllMatches;
 exports.insertFutureGame = insertFutureGame;
 exports.getMatchesById = getMatchesById;
