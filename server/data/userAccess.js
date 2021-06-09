@@ -2,7 +2,7 @@ const DButils = require("../domain/routes/DButils");
 
 async function getUsersId(){
     const users_id = (await DButils.execQuery(
-        "SELECT user_id FROM dbo.users "
+        "SELECT username FROM dbo.users "
       )
     );
 

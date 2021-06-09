@@ -1,5 +1,5 @@
 
-
+const axios = require("axios");
 const { Console } = require('console')
 const  api  = require('../api')
 
@@ -26,36 +26,53 @@ let d_email="ref";;
 let d_imageUrl="ref";;
 let d_type="referee";
 
-rl.on('line', function(line) {
+rl.on('line',async function(line) {
   switch(line.trim()) {
 
       case '1':
         console.log('UC : Reffere Registering');
         rl.question("type 'T' for default value: ",async function(answer){
-          if(answer=="T"){
+          if(answer=="T"){         
             try{
-             const x=await api.register({
-              username: d_username,
-              firstname:d_firstname,
-              lastname: d_lastname,
-              country: d_country,
-              password: d_password,
-              email: d_email,
-              image_url:d_imageUrl,
-              type: d_type
+              const res1 =await axios.post(`http://localhost:3000/Login`,{
+                username:'adminUser1',
+                password:'123456',
             })
+              const res2 =await axios.post(`http://localhost:3000/Register`,{
+                username: d_username,
+                firstname: d_firstname,
+                lastname: d_lastname,
+                country: d_country,
+                password: d_password,
+                email: d_email,
+                imageUrl: d_imageUrl,
+                type: d_type
+          })
           }
           catch (error) {
-            console.log("error");
-
+            console.log(error);
            }
           }
         })
-        
           break;
       case '2':
 
       case '3':
+        console.log('UC : Login procedure');
+        rl.question("type 'T' for default value: ",async function(answer){
+          if(answer=="T"){
+            try{
+             const x=await api.login('adminUser1','123456');
+             console.log('Login succeeded');
+          }
+          catch (error) {
+            console.log("error");
+           }
+          }
+        })
+
+          break;
+
 
       case '0':
           console.log('Have a great day!');
@@ -71,8 +88,3 @@ rl.on('line', function(line) {
   console.log('Have a great day!');
   process.exit(0);
 });
-
-
-
-
-
