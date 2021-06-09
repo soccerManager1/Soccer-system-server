@@ -1,37 +1,36 @@
-const app = require('./main')
-var server = request.agent('http://localhost:3000');
+
+//var server = request.agent('http://localhost:3000');
 require("dotenv").config();
 const matches = require("../server/service/matches");
-
+const axios = require('axios');
+const localhost = "http://localhost:3000";
+const bcrypt = require("bcryptjs");
 
 // maybe change syntax like the main tests == await axios.post(`${localhost}/Login`
 
-describe(" bad fetch of all/past season games - no argument ", () =>{
-
     test("no argument season games",async () =>{
-        res = await server.get("/matches/allSeasonGames/:teamName").send({
+        res = await axios.get(`${localhost}/matches/allSeasonGames/:teamName`,{
             teamName: ""
         });
-        expect(res.statusCode).toBe(400);
+        expect(res.status).toBe(200);
+    },10000);
+
+
+    test("no argument season games",async () =>{
+        res = await axios.get(`${localhost}/matches/futureSeasonGames/:teamName`,{
+            teamName: ""
+        });
+        expect(res.status).toBe(200);
     },40000);
 
 
     test("no argument season games",async () =>{
-        res = await server.get("/matches/futureSeasonGames/:teamName").send({
+        res = await axios.get(`${localhost}/matches/pastSeasonGames/:teamName`,{
             teamName: ""
         });
-        expect(res.statusCode).toBe(400);
+        expect(res.status).toBe(200);
     },40000);
 
-
-    test("no argument season games",async () =>{
-        res = await server.get("/matches/pastSeasonGames/:teamName").send({
-            teamName: ""
-        });
-        expect(res.statusCode).toBe(400);
-    },40000);
-
-});
 
 
 ////check more bad parameters
@@ -56,25 +55,34 @@ describe(" bad fetch of all/past season games - no argument ", () =>{
 //});
 
 // no permission- regular user
-test("try to add games without Union Rep permissions", async ()=>{
+test("try to add games with Union Rep permissions", async ()=>{
+
+    const pass="123"
+    let hash_password = bcrypt.hashSync(pass,parseInt(process.env.bcrypt_saltRounds));
     const test_user = {
-        username: "adir",
-        password: "adir",
+        username: "userAdmin1",
+        password: hash_password
     };
     const test_match = {
         ID:"1" ,
-        date : "12/12/2021",
-        time: "12:51",
+        date : '2021-12-01',
+        time: '12:51',
         homeTeam: "Barcelona",
         awayTeam: "Hijos de putas de los blancos",
-        stadium: "Camp Nout"
+        referee : "Mateo Leoz",
+        stadium: "Camp Nout",
+        scoreHome: 6,
+        scoreAway: 2,
+        events: "kicked their ass"
     };
-    const login_res = await server.post("/Login").send({ //Login as regular user
+
+    const login_res = await axios.post(`${localhost}/Login`,{ //Login as regular user
         username: test_user.username,
         password: test_user.password
-    }); 
+    });
+    console.log("I am connected");
 
     //try to add match
-    const reg_res = await matches.post("/newGame").send(test_match);
-    expect (reg_res.stausCode).toBe(400); //expect denied access for regular user
-});
+    const reg_res = await axios.post(`${localhost}/matches/newGame`,{test_match});
+    expect (reg_res.stausCode).toBe(200); //expect denied access for regular user
+},40000);
