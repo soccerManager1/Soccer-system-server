@@ -18,4 +18,14 @@ function register(user){
     return res;
 }
 
+function login(username,password){
+    const res = axios.post(`http://localhost:3000/Login`,{
+        username:username,
+        password:password,
+    })
+
+    return res;
+}
+
+exports.login=login;
 exports.register=register;

@@ -3,7 +3,8 @@ var router = express.Router();
 const DButils = require("../domain/routes/DButils");
 const bcrypt = require("bcryptjs");
 const users_access = require("../data/userAccess")
-const users_utils = require("../domain/routes/users_utils")
+const users_utils = require("../domain/routes/users_utils");
+const { Console } = require("console");
 require("dotenv").config();
 
 
@@ -14,6 +15,7 @@ router.use("/Register", async function (req, res, next) {
 
 
  console.log("in the middleware")
+ console.log(req.session.user_id)
 
   // parameters exists
   // valid parameters
@@ -45,17 +47,19 @@ router.use("/Register", async function (req, res, next) {
  }
 
  console.log(type)
-const all_users = await users_access.getUserNames();
+const all_users = await users_utils.getUserNames();
 console.log(all_users);
 
   if ( all_users.find((x) => x.username === username))
-    throw { status: 409, message: "Username taken" };
+    throw { status: 409, message: " username already exist" };
 }
 
 catch (error) {
  next(error);
 }
 try{
+  console.log(req.session);
+  console.log(req.session.user_id);
  if(type=="referee"){
    //admin user loggin
 
@@ -86,7 +90,7 @@ router.post("/Register", async (req, res, next) => {
     // add the new username
     const result = await users_access.registerUser(username,firstname, lastname, country, hash_password,imageUrl, email,type)
     
-    res.status(201).send("user created");
+    res.status(200).send("user created");
   } catch (error) {
     next(error);
   }
@@ -96,7 +100,7 @@ router.post("/Login", async (req, res, next) => {
   try {
     console.log(req.body)
     const user = await users_access.getUserInfoByName(req.body.username);
-    console.log(user)
+
 
     // check that username exists & the password is correct
     if (!user || !bcrypt.compareSync(req.body.password, user.password)) {
@@ -105,9 +109,10 @@ router.post("/Login", async (req, res, next) => {
 
     // Set cookie
     req.session.user_id = user.username;
+    console.log(req.session);
 
     // return cookie
-    res.status(200).send("login succeeded");
+    res.status(201).send("login succeeded");
   } catch (error) {
     next(error);
   }
