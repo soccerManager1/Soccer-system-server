@@ -22,17 +22,6 @@ async function getGames(teamName){
 
 async function addFutureGame(gameDetails){
     if (!gameDetails){return;}
-<<<<<<< Updated upstream:server/routes/utils/matches_utils.js
-    const [ID , date, time, homeTeam, awayTeam, stadium] = gameDetails;
-    
-    await DButils.execQuery(
-        `INSERT INTO dbo.Matches (ID,date , time, homeTeam, awayTeam, stadium)
-         VALUES ( '${ID}','${date}' , '${time}' , '${homeTeam}', '${awayTeam}', '${stadium}')`
-    );
-    
-    return true;
-   
-=======
     const ID = gameDetails.ID;
     const date = gameDetails.date;
     const time = gameDetails.time;
@@ -41,7 +30,6 @@ async function addFutureGame(gameDetails){
     const referee = gameDetails.referee;
     const stadium = gameDetails.stadium; 
     return await matches_access.insertFutureGame(ID,date, time, homeTeam, awayTeam,awayTeam,referee, stadium);
->>>>>>> Stashed changes:server/domain/routes/matches_utils.js
 }
 
 function compareDates( date,hour ){

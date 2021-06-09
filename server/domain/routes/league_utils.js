@@ -53,6 +53,6 @@ async function getSeasonTeams(seasonId){
 
 
 
-
+exports.getTeamByName = getTeamByName;
 exports.getTeams = getTeams;
 exports.getLeagueDetails = getLeagueDetails;
