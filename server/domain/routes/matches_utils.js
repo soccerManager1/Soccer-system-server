@@ -17,6 +17,26 @@ async function getGames(teamName){
    return matches;
 }
 
+
+async function addPastGame(gameDetails){
+    if (!gameDetails){return;}
+    const ID = gameDetails.ID;
+    const date = gameDetails.date;
+    const time = gameDetails.time;
+    const homeTeam = gameDetails.homeTeam;
+    const awayTeam = gameDetails.awayTeam;
+    const referee = gameDetails.referee;
+    const stadium = gameDetails.stadium; 
+    const scoreHome = gameDetails.scoreHome;
+    const scoreAway = gameDetails.scoreAway;
+    const events = gameDetails.events;
+    
+    return await matches_access.addPastGame(ID,date, time, homeTeam, awayTeam,awayTeam,referee, stadium, scoreHome, scoreAway, events);
+
+}
+
+
+
 async function addFutureGame(gameDetails){
     if (!gameDetails){return;}
     const ID = gameDetails.ID;
@@ -92,6 +112,8 @@ async function getFutureGames(teamName){
     return result;
 }
 
+
+exports.addPastGame = addPastGame;
 exports.updateEvents = updateEvents; 
 exports.updateScore = updateScore;
 exports.addFutureGame = addFutureGame;
