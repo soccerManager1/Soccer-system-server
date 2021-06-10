@@ -9,7 +9,7 @@ router.get("/allSeasonGames/:teamName", async (req, res, next) => {
     
     try {
     const teamName = req.params.teamName;
-    const matches = await  matches_utils.getGames( teamName );
+    const matches = await matches_utils.getGames( teamName );
     res.status(200).send(matches);
 
     } catch (error) {
@@ -21,7 +21,7 @@ router.get("/allSeasonGames/:teamName", async (req, res, next) => {
     
     try {
     const teamName = req.params.teamName;
-    const matches = await  matches_utils.getPastGames( teamName );
+    const matches = await matches_utils.getPastGames( teamName );
     res.status(200).send(matches);
 
     } catch (error) {
@@ -33,7 +33,7 @@ router.get("/allSeasonGames/:teamName", async (req, res, next) => {
     
     try {
     const teamName = req.params.teamName;
-    const matches = await  matches_utils.getFutureGames( teamName );
+    const matches = await matches_utils.getFutureGames( teamName );
     res.status(200).send(matches);
 
     } catch (error) {
@@ -44,7 +44,7 @@ router.get("/allSeasonGames/:teamName", async (req, res, next) => {
   router.post("/newGame", async (req, res, next) => {
     try {
     const gameDetails = req.body;
-    bool = await  matches_utils.addFutureGame( gameDetails );
+    bool = await matches_utils.addFutureGame( gameDetails );
     res.status(200).send(matches);
 
     } catch (error) {
@@ -58,7 +58,7 @@ router.get("/allSeasonGames/:teamName", async (req, res, next) => {
     const homeScore = req.body.homeScore;
     const awayScore = req.body.awayScore;
 
-    await  matches_utils.updateScore( match_id, homeScore, awayScore );
+    await matches_utils.updateScore( match_id, homeScore, awayScore );
     res.status(200).send("updated");
 
     } catch (error) {
@@ -72,7 +72,7 @@ router.get("/allSeasonGames/:teamName", async (req, res, next) => {
     const match_id = req.body.match_id;
     const events = req.body.events;
 
-    await  matches_utils.updateEvents( match_id, events );
+    await matches_utils.updateEvents( match_id, events );
     res.status(200).send("updated");
 
     } catch (error) {
