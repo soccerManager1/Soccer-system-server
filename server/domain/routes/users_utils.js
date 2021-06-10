@@ -29,6 +29,13 @@ async function isUserAdmin(userName) {
   return false;
 }
 
+async function getUserNames() {
+  const user=users_access.getUserNames()
+  return user;
+}
+
+
+exports.getUserNames = getUserNames;
 exports.isUserAdmin = isUserAdmin;
 exports.markMatchAsFavorite = markMatchAsFavorite;
 exports.getFavoriteMatches = getFavoriteMatches;
