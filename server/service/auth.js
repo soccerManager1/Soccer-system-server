@@ -66,7 +66,7 @@ try{
       if(!req.session || !req.session.user_id)
         throw { status: 401, message: "please login before trying the following request" };
 
-      if( users_utils.isUserAdmin(req.session.user_id) == false)
+      if( users_utils.isUserAdmin(req.session.user_id) != true )
         throw { status: 403, message: "no premission to do the following requste" };
    }
   }
