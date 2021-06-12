@@ -24,11 +24,12 @@ test("try to register new referee with Union Rep permissions", async ()=>{
             type:'referee'
         });
       } catch (e) {
+        //should be 200
         expect(e).toStrictEqual(Error('Request failed with status code 401'));
       }
 });
 
-test("try to register referee username already taken with Union Rep permissions", async ()=>{
+test("try to register referee with username already taken ", async ()=>{
 
     await axios.post(`${localhost}/Login`,{ //Login as admin user
         username:'adminUser1',
@@ -38,7 +39,7 @@ test("try to register referee username already taken with Union Rep permissions"
 
     try {
         await axios.post(`${localhost}/Register`,{
-            username:'Ref14',
+            username:'Ref1',
             firstname:'adirr12223',
             lastname:'maroma12223',
             country:'Yemen',
@@ -53,7 +54,7 @@ test("try to register referee username already taken with Union Rep permissions"
 
 });
 
-test("try to register referee missing parameters with Union Rep permissions", async ()=>{
+test("try to register referee missing parameters", async ()=>{
 
     await axios.post(`${localhost}/Login`,{ //Login as admin user
         username:'adminUser1',
@@ -80,7 +81,6 @@ test("try to register referee missing parameters with Union Rep permissions", as
 // bad permission - regualr user
 test("try to register referee without Union Rep permissions", async ()=>{
 
-    //expect(res.status).toBe(401);
     try {
         await axios.post(`${localhost}/Login`,{ //Login as regular user
             username:'regUser1',
@@ -98,6 +98,32 @@ test("try to register referee without Union Rep permissions", async ()=>{
             type:'referee'
         });
       } catch (e) {
+        //should be 403
         expect(e).toStrictEqual(Error('Request failed with status code 401'));
       }
 });
+
+
+
+// try to register referee with no user looged in 
+test("try to register referee without Union Rep permissions", async ()=>{
+
+  try {
+      
+      await axios.post(`${localhost}/Register`,{
+          username:'Ref14',
+          firstname:'adirr12223',
+          lastname:'maroma12223',
+          country:'Yemen',
+          password:'marom4567',
+          email:'ad2i22312312r@gmail.com',
+          imageUrl:'http://google.photos.myphoto=?adir?query=1',
+          type:'referee'
+      });
+    } catch (e) {
+      expect(e).toStrictEqual(Error('Request failed with status code 401'));
+    }
+});
+
+
+

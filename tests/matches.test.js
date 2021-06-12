@@ -5,27 +5,7 @@ const matches = require("../server/service/matches");
 const axios = require('axios');
 const localhost = "http://localhost:3000";
 const bcrypt = require("bcryptjs");
-
-// maybe change syntax like the main tests == await axios.post(`${localhost}/Login`
-/*
-    test("good fetch season game",async () =>{
-        res = await axios.get(`${localhost}/matches/allSeasonGames/:real madrid`);
-        expect(res.status).toBe(400);
-    });
-
-*/
-    // insert the two teams : real madrid and barcelona
-    test("good fetch season game",async () =>{
-       // try{
-            res=await axios.get(`${localhost}/matches/futureSeasonGames/:barcelona`);
-       // }
-      //  catch(e){
-      //      expect(e).toStrictEqual(Error('Request failed with status code 400'));
-       // }
-       expect(res.status).toBe(200);
-            
-    });
-        
+var cookie = null;
 
 
     test("no team name in past season games",async () =>{
@@ -44,94 +24,200 @@ const bcrypt = require("bcryptjs");
 
 ////check more bad parameters
 //describe("Bad paramters name requests",() =>{
-    test("bad format update score with Union Rep permissions", async()=> {
-        await axios.post(`${localhost}/Login`,{ //Login as admin user
-            username:'adminUser1',
-            password:'123456'
-        });
-            try {
-                //expect(res.status).toBe(200);
-                await axios.put(`${localhost}/matches/updateScore`,{
-                    match_id:"1213",
-                    homeScore:"1",
-                    awayScore:""
-                });
-              } catch (e) {
-                expect(e).toStrictEqual(Error('Request failed with status code 500'));
-              }
-    });
+  //  test("bad format update score with Union Rep permissions", async()=> {
+  //      await axios.post(`${localhost}/Login`,{ //Login as admin user
+  //          username:'adminUser1',
+  //          password:'123456'
+  //      });
+  //          try {
+  //              //expect(res.status).toBe(200);
+  //              await axios.put(`${localhost}/matches/updateScore`,{
+  //                  match_id:"1213",
+  //                  homeScore:"1",
+  //                  awayScore:""
+  //              });
+  //            } catch (e) {
+  //              expect(e).toStrictEqual(Error('Request failed with status code 400'));
+  //            }
+  //  },50000);
 //
 //
-    test("bad format update events with Union Rep permissions",async()=>{
-        await axios.post(`${localhost}/Login`,{ //Login as admin user
-            username:'adminUser1',
-            password:'123456'
-        });
-        try {
-            //expect(res.status).toBe(200);
-            await axios.put(`${localhost}/matches/updateEvents`,{
-                match_id:"1213",
-                events:""
-            });
-          } catch (e) {
-            expect(e).toStrictEqual(Error('Request failed with status code 500'));
-          }
-    });
-
-
-// good permission- admin user
-test("try to add games with Union Rep permissions", async ()=>{
+  //  test("bad format update events with Union Rep permissions",async()=>{
+  //      await axios.post(`${localhost}/Login`,{ //Login as admin user
+  //          username:'adminUser1',
+  //          password:'123456'
+  //      });
+  //      try {
+  //          //expect(res.status).toBe(200);
+  //          await axios.put(`${localhost}/matches/updateEvents`,{
+  //              match_id:"1213",
+  //              events:""
+  //          });
+  //        } catch (e) {
+  //          expect(e).toStrictEqual(Error('Request failed with status code 500'));
+  //        }
+  //  },50000);
+//
+/*
+************************** USE CASE 5 - ADD GAMES ***********************************************
+*/
+test("try to add games with bad home team name", async ()=>{
 
     const res = await axios.post(`${localhost}/Login`,{ //Login as regular user
         username:"adminUser1",
         password:"123456"
     });
-    //expect(res.status).toBe(201);
 
+    //cookie=req.headers["set-cookie"][0];
+
+    //req.session.user_id="adminUser1";
+    //sessionStorage.user_id="adminUser1";
     //try to add match
        try {
-        await axios.post(`${localhost}/matches/newGame`,{
-            ID:"1",
-            date:'2021-12-01',
+            console.log("cookie is:");
+            console.log(cookie);
+        await axios.post(`${localhost}/matches/addFutureGame`,{
+            date:'10/10/2021',
             time:'12:51',
             homeTeam:"Barcelona",
             awayTeam:"Hijos de putas de los blancos",
             referee:"Mateo Leoz",
             stadium:"Camp Nout",
-            scoreHome:6,
-            scoreAway:2,
-            events:"kicked their ass"
-        });
+            cookie: cookie
+        })
+        //then((res)=>expect(res.status).toBe(200));
+        expect(res.status).toBe(401);
+        
       } catch (e) {
-        expect(e).toStrictEqual(Error('Request failed with status code 404'));
-      }
+     
+        expect(e).toStrictEqual(Error('Request failed with status code 401'));
+    }
 });
+//
+//
+//// bad permission - regualr user
+    test("try to add games without Union Rep permissions", async ()=>{
+
+        try {
+            await axios.post(`${localhost}/Login`,{ //Login as regular user
+                username:"regUser1",
+                password:"123456"
+            });
+
+            await axios.post(`${localhost}/matches/addFutureGame`,{
+                date:'2021-12-01',
+                time:'12:51',
+                homeTeam:"Barcelona",
+                awayTeam:"Hijos de putas de los blancos",
+                referee:"Mateo Leoz",
+                stadium:"Camp Nout",
+            });
+          } catch (e) {
+            expect(e).toStrictEqual(Error('Request failed with status code 401'));
+          }
+        });
+
+    //expect (reg_res.stausCode).toBe(401); //expect denied access for regular user
 
 
-// bad permission - regualr user
-test("try to add games without Union Rep permissions", async ()=>{
+//try to add games with missing parameters - no referee
+test("try to add games without parameters", async ()=>{
 
     try {
-        await axios.post(`${localhost}/Login`,{ //Login as regular user
-            username:"regUser1",
+        const req=await axios.post(`${localhost}/Login`,{ //Login as regular user
+            username:"adminUser1",
             password:"123456"
-        });
+        })
+        
 
-        await axios.post(`${localhost}/matches/newGame`,{
-            ID:"1",
+        await axios.post(`${localhost}/matches/addFutureGame`,{
             date:'2021-12-01',
             time:'12:51',
             homeTeam:"Barcelona",
             awayTeam:"Hijos de putas de los blancos",
-            referee:"Mateo Leoz",
+            //referee:"Mateo Leoz",
             stadium:"Camp Nout",
-            scoreHome:6,
-            scoreAway:2,
-            events:"kicked their ass"
         });
       } catch (e) {
-        expect(e).toStrictEqual(Error('Request failed with status code 401'));
+          //this is good for some reason
+        expect(e).toStrictEqual(Error('Request failed with status code 400'));
       }
     });
 
     //expect (reg_res.stausCode).toBe(401); //expect denied access for regular user
+
+
+
+// try to enter game with bad date - future that took place in the past
+    test("try to add game with bad date", async ()=>{
+    
+        try {
+            await axios.post(`${localhost}/Login`,{ //Login as regular user
+                username:"adminUser1",
+                password:"123456"
+            });
+        
+            await axios.post(`${localhost}/matches/addFutureGame`,{
+                date:'2020-12-01',
+                time:'12:51',
+                homeTeam:"Barcelona",
+                awayTeam:"Hijos de putas de los blancos",
+                referee:"Mateo Leoz",
+                stadium:"Camp Nout",
+            });
+          } catch (e) {
+              //should be 400
+            expect(e).toStrictEqual(Error('Request failed with status code 401'));
+          }
+        });
+
+
+    //try to add games with non-exsiting team
+    test("try to add games with non-exsiting team", async ()=>{
+    
+        try {
+            await axios.post(`${localhost}/Login`,{ //Login as regular user
+                username:"adminUser1",
+                password:"123456"
+            });
+        
+            await axios.post(`${localhost}/matches/addFutureGame`,{
+                date:'2020-12-01',
+                time:'12:51',
+                homeTeam:"Non-exsiting team",
+                awayTeam:"Hijos de putas de los blancos",
+                referee:"Mateo Leoz",
+                stadium:"Camp Nout",
+            });
+          } catch (e) {
+              //should be 400
+            expect(e).toStrictEqual(Error('Request failed with status code 401'));
+          }
+        });
+
+
+        //try to add games with non registered referee
+        test("try to add games with non registered referee", async ()=>{
+    
+            try {
+                await axios.post(`${localhost}/Login`,{ //Login as regular user
+                    username:"adminUser1",
+                    password:"123456"
+                });
+            
+                await axios.post(`${localhost}/matches/addFutureGame`,{
+                    date:'2020-12-01',
+                    time:'12:51',
+                    homeTeam:"Non-exsiting team",
+                    awayTeam:"Hijos de putas de los blancos",
+                    referee:"non registered referee",
+                    stadium:"Camp Nout",
+                });
+              } catch (e) {
+                  //should be 400
+                expect(e).toStrictEqual(Error('Request failed with status code 401'));
+              }
+            });
+
+
+

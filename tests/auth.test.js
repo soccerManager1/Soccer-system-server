@@ -11,7 +11,7 @@ require("dotenv").config();
 jest.setTimeout(30000);
 
 test("login a registered user" , async() => {
-    res = await axios.post(`${localhost}/Login`,{ //Login as admin user
+     res = await axios.post(`${localhost}/Login`,{ //Login as admin user
         username:'adminUser1',
         password:'123456'
     });
@@ -22,8 +22,6 @@ test("login a registered user" , async() => {
 test("Bad userName", async() =>{
 
     await axios.post(`${localhost}/Logout`,{});
-
-    //res is a promise?
     try {
         await axios.post(`${localhost}/Login`,{
             username:"Noone",

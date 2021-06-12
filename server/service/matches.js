@@ -264,7 +264,7 @@ router.post("/addPastGame", async (req, res, next) => {
   router.get("/getAllFutureGames", async (req, res, next) => {
     
     try {
-    const matches = await  matches_utils.getAllFutureGames( );
+    const matches = await  matches_utils.getAllFutureGames();
     res.status(200).send(matches);
 
     } catch (error) {
@@ -272,6 +272,14 @@ router.post("/addPastGame", async (req, res, next) => {
     }
   });
 
+  router.get("/regressionTest1",(req, res, next) => {
+    try {
+      res.status(400).send("test");
+  
+    } catch (error) {
+      res.status(400).send("test");
+    }
+   });
 
 
 module.exports = router;
