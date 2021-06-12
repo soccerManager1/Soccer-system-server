@@ -1,4 +1,4 @@
-const match_utils= require("../server/domain/routes/matches_utils");
+const match_utils= require("../server/domain/routes/matches_utils.js");
 const api_domain = "https://soccer.sportmonks.com/api/v2.0";
 //const DButils = require("../");
 //const matches_access = require("../../data/matchesAccess")
@@ -12,7 +12,7 @@ const api_domain = "https://soccer.sportmonks.com/api/v2.0";
 
 // bad parameter
 test("add future game with no parameter" , async() => {
-    const res= await match_utils.addFutureGame();
+    res = await match_utils.addFutureGame();
     expect (res).toBeUndefined();
 });
 

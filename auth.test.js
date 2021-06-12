@@ -1,89 +1,99 @@
-
-//const request = require('supertest');
-//var server = request.agent('http://localhost:3000');
-const bcrypt = require("bcryptjs");
+//import {auth} from '../server/service/auth';
 const axios = require('axios');
+//const { response, response } = require('express');
 const localhost = "http://localhost:3000";
 require("dotenv").config();
+//let queryUser = null;
+//const request = require('supertest');
+//const app = require("../server/main");
+//var user = request.agent(app);
+
+jest.setTimeout(30000);
+
+test("login a registered user" , async() => {
+    res = await axios.post(`${localhost}/Login`,{ //Login as admin user
+        username:'adminUser1',
+        password:'123456'
+    });
+    expect(res.status).toBe(201);
+});
 
 //non existing user or passwords
-    test("Bad userName", () =>{
-            res= axios.post(`${localhost}/Login`,{
-            username: "No one",
-            password: "pass123"
-            });
-       //res is a promise?
-        expect(res.result).toBeUndefined();
-    });
+test("Bad userName", async() =>{
 
-
-    test("bad password",()=>{
-       res= axios.post(`${localhost}/Login`,{
-            username: "adir",
-            password: "bad password"
+    await axios.post(`${localhost}/Logout`,{});
+    try {
+        await axios.post(`${localhost}/Login`,{
+            username:"Noone",
+            password:"pass123"
         });
-        expect(res.result).toBeUndefined();
-    });
+      } catch (e) {
+        expect(e).toStrictEqual(Error('Request failed with status code 401'));
+      }
+
+   });
 
 
-    //empty parametres
-    test("empty parametres", ()=>{
-        //req.session.reset();
-        res =  axios.post(`${localhost}/Login`,{
-            username: "",
-            password: ""
+test("bad password", async() =>{
+    try {
+        await axios.post(`${localhost}/Login`,{
+            username:"adir",
+            password:"bad password"
         });
-        expect(res.result).toBeUndefined();
-        //expect(res.status).toBe(401);
-    });
+      } catch (e) {
+        expect(e).toStrictEqual(Error('Request failed with status code 401'));
+      }
+
+   });
 
 
-//correct Authentication
-
-    test("Correct Authentication", () =>{
-        //req.session.reset();
-        const hash_password = bcrypt.hashSync("123",parseInt(process.env.bcrypt_saltRounds));
-        res= axios.post(`${localhost}/Login`,{
-            username: "userAdmin1",
-            password: "123"
+   //empty parametres
+   test("empty parametres", async() =>{
+       try {
+        await axios.post(`${localhost}/Login`,{
+            username:"",
+            password:""
         });
-        expect(res.result).toBe(401);
-       //how to check promise?
-    });
+      } catch (e) {
+        expect(e).toStrictEqual(Error('Request failed with status code 401'));
+      }
+   });
 
 
-    test("Try to Register an existing user with a taken username",  () =>{
-        //req.session.reset();
-        res= axios.post(`${localhost}/Register`,{
-        username: "adir1234567",
-        firstname: "adir",
-        lastname:"marom",
-        country: "Yemen",
-        password : "marom4567",
-        email: "adir@gmail.com",
-        image_url : "http://google.photos.myphoto=?adir?query=1",
-        type: "regular"
+ test("Try to Register an existing user with a taken username", async() =>{
+
+     try {
+        await axios.post(`${localhost}/Register`,{
+            username:"adir1234567",
+            firstname:"adir",
+            lastname:"marom",
+            country:"Yemen",
+            password:"marom4567",
+            email:"adir@gmail.com",
+            imageUrl:"http://google.photos.myphoto=?adir?query=1",
+            type:"regular"
         });
-        expect(res.result).toBeUndefined();
-    });
+      } catch (e) {
+        expect(e).toStrictEqual(Error('Request failed with status code 409'));
+      }
+ });
 
-
-    test("Try to Register an new user with non legal type field",  () =>{
-        //req.session.reset();
-        res= axios.post(`${localhost}/Register`,{
-        username: "adir1234567",
-        firstname: "adir",
-        lastname:"marom",
-        country: "Yemen",
-        password : "marom4567",
-        email: "adir@gmail.com",
-        image_url : "http://google.photos.myphoto=?adir?query=1",
-        type: "Non-legal type"
+test("Try to Register an new user with non legal type field", async () =>{
+    try {
+        await axios.post(`${localhost}/Register`,{
+            username:"dor",
+            firstname:"dor",
+            lastname:"test",
+            country:"test",
+            password:"test123",
+            email:"adir@gmail.com",
+            imageUrl:"http://google.photos.myphoto=?adir?query=1",
+            type:"Non-legal type"
         });
-        expect(res.result).toBeUndefined();
-    });
-
-
+      } catch (e) {
+        expect(e).toStrictEqual(Error('Request failed with status code 400'));
+      }
+});
 
 
 //describe("log out test", ()=>{
