@@ -13,19 +13,19 @@ test("try to register new referee with Union Rep permissions", async ()=>{
     });
 
     try {
-        await axios.post(`${localhost}/Register`,{
+        res = await axios.post(`${localhost}/Register`,{
             username:'Ref14',
             firstname:'adirr12223',
             lastname:'maroma12223',
             country:'Yemen',
-            password:'marom4567',
+            password:'marom@4567',
             email:'ad2i22312312r@gmail.com',
             imageUrl:'http://google.photos.myphoto=?adir?query=1',
             type:'referee'
         });
+        expect(res.status).toBe(200);
       } catch (e) {
-        //should be 200
-        expect(e).toStrictEqual(Error('Request failed with status code 401'));
+        //expect(e).toStrictEqual(Error('Request failed with status code 401'));
       }
 });
 
@@ -35,11 +35,10 @@ test("try to register referee with username already taken ", async ()=>{
         username:'adminUser1',
         password:'123456'
     });
-    //expect(res.status).toBe(201);
 
     try {
         await axios.post(`${localhost}/Register`,{
-            username:'Ref1',
+            username:'Ref18',
             firstname:'adirr12223',
             lastname:'maroma12223',
             country:'Yemen',
@@ -49,7 +48,7 @@ test("try to register referee with username already taken ", async ()=>{
             type:'referee'
         });
       } catch (e) {
-        expect(e).toStrictEqual(Error('Request failed with status code 401'));
+        expect(e).toStrictEqual(Error('Request failed with status code 409'));
       }
 
 });
@@ -60,7 +59,6 @@ test("try to register referee missing parameters", async ()=>{
         username:'adminUser1',
         password:'123456'
     });
-    //expect(res.status).toBe(201);
     try {
         await axios.post(`${localhost}/Register`,{
             username:'Ref14',
@@ -81,11 +79,12 @@ test("try to register referee missing parameters", async ()=>{
 // bad permission - regualr user
 test("try to register referee without Union Rep permissions", async ()=>{
 
+  await axios.post(`${localhost}/Login`,{ //Login as regular user
+    username:'Reguser2',
+    password:'123456'
+  });
+
     try {
-        await axios.post(`${localhost}/Login`,{ //Login as regular user
-            username:'regUser1',
-            password:'123456'
-        });
         
         await axios.post(`${localhost}/Register`,{
             username:'Ref14',
@@ -106,7 +105,7 @@ test("try to register referee without Union Rep permissions", async ()=>{
 
 
 // try to register referee with no user looged in 
-test("try to register referee without Union Rep permissions", async ()=>{
+test("try to register referee without user logged in", async ()=>{
 
   try {
       

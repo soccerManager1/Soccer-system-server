@@ -1,9 +1,6 @@
-<<<<<<< HEAD
+
 node_modules
 .env
-
-=======
-# dependencies
 /node_modules
 package-lock.json
->>>>>>> 895ab6eadeccb35a4c6641f762fc9d910d92bea3
+db.sql

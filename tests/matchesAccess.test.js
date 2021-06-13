@@ -1,6 +1,4 @@
 const matchesAccessUtil = require("../server/data/matchesAccess.js");
-//var server = request.agent('http://localhost:3000');
-
 
 //Assuming user name with the following details is in the DB
 test("bad fetch of non existing matches",async () =>{

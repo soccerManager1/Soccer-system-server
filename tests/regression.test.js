@@ -11,7 +11,7 @@ test("First Regression Test - updateScore non functional - system still operates
         await axios.get(`${localhost}/matches/regressionTest1`,{}); 
     }
     catch(e){
-        console.log(e);
+        //console.log(e);
         expect(e).toStrictEqual(Error('Request failed with status code 400'));
     }
 })

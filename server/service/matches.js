@@ -192,7 +192,7 @@ router.post("/addPastGame", async (req, res, next) => {
     const teamName = req.params.teamName;
     const matches = await  matches_utils.getPastGames( teamName );
     if(!teamName || teamName===":"){
-      console.log("i am in the if in the pastSeasonGames :");
+ //     console.log("i am in the if in the pastSeasonGames :");
       res.status(400).send("no arguments given");
     }
     else
@@ -209,7 +209,7 @@ router.post("/addPastGame", async (req, res, next) => {
     const teamName = req.params.teamName;
     const matches = await  matches_utils.getFutureGames( teamName );
     if(!teamName || teamName===":"){
-      console.log("i am in the if in the pastSeasonGames :");
+ //     console.log("i am in the if in the pastSeasonGames :");
       res.status(400).send("no arguments given");
     }
     else

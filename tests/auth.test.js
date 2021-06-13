@@ -1,12 +1,8 @@
-//import {auth} from '../server/service/auth';
+
 const axios = require('axios');
-//const { response, response } = require('express');
 const localhost = "http://localhost:3000";
 require("dotenv").config();
-//let queryUser = null;
-//const request = require('supertest');
-//const app = require("../server/main");
-//var user = request.agent(app);
+
 
 jest.setTimeout(30000);
 
@@ -20,8 +16,7 @@ test("login a registered user" , async() => {
 
 //non existing user or passwords
 test("Bad userName", async() =>{
-
-    await axios.post(`${localhost}/Logout`,{});
+  
     try {
         await axios.post(`${localhost}/Login`,{
             username:"Noone",
@@ -95,12 +90,4 @@ test("Try to Register an new user with non legal type field", async () =>{
       }
 });
 
-
-//describe("log out test", ()=>{
-//    test("Succesfull logout", async()=>{
-//        res=await server.post("/Logout");
-//        expect(res.message.localeCompare("logout succeeded")===0);
-//    },40000)
-//})
-// Register Accpetence 
 

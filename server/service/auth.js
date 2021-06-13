@@ -12,12 +12,12 @@ require("dotenv").config();
 router.use("/Register", async function (req, res, next) {
 
 
- console.log("in the middleware")
- console.log(req.session.user_id)
+ //console.log("in the middleware")
+ //console.log(req.session.user_id)
 
   // parameters exists
   // valid parameters
-  console.log(req.body);
+  //console.log(req.body);
   const type=req.body.type; 
   const username=req.body.username;
   const firstname=req.body.firstname;
@@ -44,7 +44,7 @@ router.use("/Register", async function (req, res, next) {
  }
 
 const all_users = await users_utils.getUserNames();
-console.log(all_users);
+//console.log(all_users);
 
   if ( all_users.find((x) => x.username === username))
     throw { status: 409, message: " username already exist" };
@@ -60,7 +60,7 @@ try{
       if(!req.session || !req.session.user_id)
         throw { status: 401, message: "please login before trying the following request" };
 
-      if( users_utils.isUserAdmin(req.session.user_id) != true )
+      if( await users_utils.isUserAdmin(req.session.user_id) != true )
         throw { status: 403, message: "no premission to do the following requste" };
    }
   }
@@ -72,7 +72,7 @@ try{
 
 router.post("/Register", async (req, res, next) => {
   try {
-    console.log("in the function")
+    //console.log("in the function")
 
 
     const { username, firstname , lastname, country, password, email, imageUrl,type  } = req.body;
@@ -92,7 +92,7 @@ router.post("/Register", async (req, res, next) => {
 
 router.post("/Login", async (req, res, next) => {
   try {
-    console.log(req.body)
+    //console.log(req.body)
     const user = await users_access.getUserInfoByName(req.body.username);
 
 

@@ -9,7 +9,7 @@ async function getGames(teamName){
 
     const matches =  matches_access.getAllMatches(teamName)
    
-   console.log(matches);
+  // console.log(matches);
    for (let i=0 ; i<matches.length; i++){
        matches[i].date = matches[i].date.toLocaleDateString();
        matches[i].time = matches[i].time.toLocaleTimeString();
@@ -139,10 +139,10 @@ function date_to_string(date){
 }
 
 async function getAllFutureGames(){
-    console.log( "in the function ")
+  //  console.log( "in the function ")
     result = [];
     const matches =await matches_access.getAllMatches(); 
-    console.log(matches)
+   // console.log(matches)
 
     var today = new Date();
     today = date_to_string(today)
