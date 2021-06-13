@@ -4,6 +4,7 @@ const axios = require('axios');
 const localhost = "http://localhost:3000";
 var cookie = null;
 
+// **************************************** Acceptance Tests *************************************************
 
     test("no team name in past season games",async () =>{
         try{
@@ -19,6 +20,8 @@ var cookie = null;
 /*
 ************************** USE CASE 5 - ADD GAMES ***********************************************
 */
+// **************************************** Integration Tests *************************************************
+
 test("try to add games with bad home team name", async ()=>{
 
     const res = await axios.post(`${localhost}/Login`,{ //Login as regular user

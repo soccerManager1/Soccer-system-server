@@ -3,7 +3,7 @@ const localhost = "http://localhost:3000";
 require("dotenv").config();
 jest.setTimeout(30000);
 
-// **************************************** Regresion Test *************************************************
+// **************************************** Regresion Tests *************************************************
 
 test("First Regression Test - updateScore non functional - system still operates",async () =>{
     try{
