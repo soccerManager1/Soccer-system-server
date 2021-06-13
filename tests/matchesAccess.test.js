@@ -1,6 +1,7 @@
 const matchesAccessUtil = require("../server/data/matchesAccess.js");
 
-//Assuming user name with the following details is in the DB
+// **************************************** Unit Tests *************************************************
+
 test("bad fetch of non existing matches",async () =>{
     const bad_matches = await matchesAccessUtil.getAllMatchesByTeam("non_exsiting");
     expect (bad_matches.length).toBe(0) ;

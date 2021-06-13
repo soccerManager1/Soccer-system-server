@@ -4,6 +4,7 @@ const localhost = "http://localhost:3000";
 require("dotenv").config();
 jest.setTimeout(30000);
 
+// **************************************** Integration Tests *************************************************
 // good permission- admin user
 test("try to register new referee with Union Rep permissions", async ()=>{
 

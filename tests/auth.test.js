@@ -6,6 +6,7 @@ require("dotenv").config();
 
 jest.setTimeout(30000);
 
+// **************************************** Acceptance Tests *************************************************
 test("login a registered user" , async() => {
      res = await axios.post(`${localhost}/Login`,{ //Login as admin user
         username:'adminUser1',
@@ -16,7 +17,7 @@ test("login a registered user" , async() => {
 
 //non existing user or passwords
 test("Bad userName", async() =>{
-  
+
     try {
         await axios.post(`${localhost}/Login`,{
             username:"Noone",
