@@ -1,29 +1,48 @@
-const userAccessUtil = require("../server/data/userAccess");
-//var server = request.agent('http://localhost:3000');
-
+const userAccessUtil = require("../server/data/userAccess.js");
 
 //Assuming user name with the following details is in the DB
 test("bad fetch of non existing user",async () =>{
-    const bad_user=await userAccessUtil.getUserInfoByName("non_exsiting");
+    const bad_user = await userAccessUtil.getUserInfoByName("non_exsiting");
     expect (bad_user).toBeUndefined() ;
 },40000);
 
 
 test("good fetch of user that is in the DB",async () =>{
-    const temp_user= await userAccessUtil.getUserInfoByName("adir");
+    const temp_user = await userAccessUtil.getUserInfoByName("Dor");
     const test_user = {
-        username: "adir",
-        firstname: "adir",
-        lastname:"marom",
-        country: "Yemen",
-        password : "marom456",
-        email: "adir@gmail.com",
-        image_url :"http://google.photos.myphoto=?adir?query=1",
-        type: "regular"
+        username:"Dor",
+        firstname:"dor",
+        lastname:"levi",
+        country:"israel",
+        password:"$2a$10$o7Cm0ZgLmgxYdhLGloxMFOjcoWivSqzeYpjQTEWQMyP/qi/jxjLXK",
+        email:"www.www",
+        image_url:"www.www",
+        type:"regular"
     };
 
     expect(temp_user).toEqual(test_user);
 },40000);
 
-// what other test? maybe login and then login again 
+
+//Assuming user name with the following details is in the DB
+test("existing user",async () =>{
+    const users = await userAccessUtil.getUserNames("adir");
+    expect (users.length).not.toBe(0) ;
+},40000);
+
+test("existing user info",async () =>{
+    const users = await userAccessUtil.getUserInfoByName("adir");
+    expect (users.length).not.toBe(0) ;
+},40000);
+
+test("not existing user info",async () =>{
+    const users = await userAccessUtil.getUserInfoByName("non_exsiting");
+    expect (users).toBeUndefined();
+},40000);
+
+test("get user info",async () =>{
+    const users = await userAccessUtil.getUserNames();
+    expect (users.length).not.toBe(0) ;
+},40000);
+
 

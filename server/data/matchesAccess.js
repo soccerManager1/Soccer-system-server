@@ -1,12 +1,19 @@
 const DButils = require("../domain/routes/DButils");
 
-async function getAllMatches(teamName){
+async function getAllMatchesByTeam(teamName){
     const matches = await DButils.execQuery(
         `SELECT *
          FROM dbo.Matches
          WHERE homeTeam = '${teamName}' OR awayTeam = '${teamName}'`
     );
+    return matches;
+}
 
+async function getAllMatches(){
+    const matches = await DButils.execQuery(
+        `SELECT *
+         FROM dbo.Matches`
+    );
     return matches;
 }
 
@@ -18,16 +25,6 @@ async function getMatchesById(match_id){
     );
     return match
 }
-
-async function insertPastGame(ID,date, time, homeTeam, awayTeam, referee, stadium,scoreHome, scoreAway, events){
-
-    await DButils.execQuery(
-        `INSERT INTO dbo.Matches (ID,date , time, homeTeam, awayTeam, referee , stadium, scoreHome,scoreAway, events )
-         VALUES ( '${ID}','${date}' , '${time}' , '${homeTeam}', '${awayTeam}','${referee}', '${stadium}', '${scoreHome}', '${scoreAway}', '${events}')`
-    );
-    
-    return true;
-  }
 
 
 async function insertFutureGame(ID,date, time, homeTeam, awayTeam, referee, stadium){
@@ -60,8 +57,9 @@ async function updateMatchEvents(match_id, events){
     return true;
 }
 
-exports.insertPastGame = insertPastGame;
+
 exports.getAllMatches = getAllMatches;
+exports.getAllMatchesByTeam = getAllMatchesByTeam;
 exports.insertFutureGame = insertFutureGame;
 exports.getMatchesById = getMatchesById;
 exports.updateMatchEvents = updateMatchEvents;

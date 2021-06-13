@@ -23,7 +23,9 @@ async function getFavoriteMatches(user_id) {
 }
 
 async function isUserAdmin(userName) {
-  const user=users_access.getUserInfoByName(userName)
+  if (!userName){return false}
+  const user = await users_access.getUserInfoByName(userName)
+  console.log(user.type)
   if(user.type=='admin')
     return true;
   return false;

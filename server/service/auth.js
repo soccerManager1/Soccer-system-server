@@ -8,18 +8,16 @@ const { Console } = require("console");
 require("dotenv").config();
 
 
-
-
 //middleware
 router.use("/Register", async function (req, res, next) {
 
 
- console.log("in the middleware")
- console.log(req.session.user_id)
+ //console.log("in the middleware")
+ //console.log(req.session.user_id)
 
   // parameters exists
   // valid parameters
-  console.log(req.body);
+  //console.log(req.body);
   const type=req.body.type; 
   const username=req.body.username;
   const firstname=req.body.firstname;
@@ -37,8 +35,7 @@ router.use("/Register", async function (req, res, next) {
      massege: "all parameters are requird!"
    }
  }
-  // valide type
-  console.log(type)
+
  if( type!="regular" && type!="referee"){
   throw {
     status: 400,
@@ -46,9 +43,8 @@ router.use("/Register", async function (req, res, next) {
   }
  }
 
- console.log(type)
 const all_users = await users_utils.getUserNames();
-console.log(all_users);
+//console.log(all_users);
 
   if ( all_users.find((x) => x.username === username))
     throw { status: 409, message: " username already exist" };
@@ -58,16 +54,14 @@ catch (error) {
  next(error);
 }
 try{
-  console.log(req.session);
-  console.log(req.session.user_id);
  if(type=="referee"){
    //admin user loggin
 
       if(!req.session || !req.session.user_id)
         throw { status: 401, message: "please login before trying the following request" };
 
-      if( users_utils.isUserAdmin(req.session.user_id) == false)
-        throw { status: 403, message: "no premission to do the following requste" };
+      if( await users_utils.isUserAdmin(req.session.user_id) != true )
+        throw { status: 403, message: "no premission to do the following request" };
    }
   }
    catch (error) {
@@ -78,7 +72,7 @@ try{
 
 router.post("/Register", async (req, res, next) => {
   try {
-    console.log("in the function")
+    //console.log("in the function")
 
 
     const { username, firstname , lastname, country, password, email, imageUrl,type  } = req.body;
@@ -98,7 +92,7 @@ router.post("/Register", async (req, res, next) => {
 
 router.post("/Login", async (req, res, next) => {
   try {
-    console.log(req.body)
+    //console.log(req.body)
     const user = await users_access.getUserInfoByName(req.body.username);
 
 
@@ -109,10 +103,9 @@ router.post("/Login", async (req, res, next) => {
 
     // Set cookie
     req.session.user_id = user.username;
-    console.log(req.session);
 
     // return cookie
-    res.status(201).send("login succeeded");
+    res.status(201).send(user);
   } catch (error) {
     next(error);
   }
@@ -122,5 +115,7 @@ router.post("/Logout", function (req, res) {
   req.session.reset(); // reset the session info --> send cookie when  req.session == undefined!!
   res.send({ success: true, message: "logout succeeded" });
 });
+
+
 
 module.exports = router;
