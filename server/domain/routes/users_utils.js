@@ -23,6 +23,7 @@ async function getFavoriteMatches(user_id) {
 }
 
 async function isUserAdmin(userName) {
+  if (!userName){return false}
   const user=users_access.getUserInfoByName(userName)
   if(user.type=='admin')
     return true;
