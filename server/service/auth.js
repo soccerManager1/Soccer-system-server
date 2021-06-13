@@ -61,7 +61,7 @@ try{
         throw { status: 401, message: "please login before trying the following request" };
 
       if( await users_utils.isUserAdmin(req.session.user_id) != true )
-        throw { status: 403, message: "no premission to do the following requste" };
+        throw { status: 403, message: "no premission to do the following request" };
    }
   }
    catch (error) {
