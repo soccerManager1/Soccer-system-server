@@ -45,8 +45,8 @@ router.use("/addFutureGame", async function (req, res, next) {
     res.status(400).send("all parameters are requird! ");
     return;
   }
-
-  if( users_utils.isUserAdmin(req.session.user_id) != true ){
+  
+  if( await users_utils.isUserAdmin(req.session.user_id) != true ){
     res.status(401).send("user not have permission ");
     return;
   }
@@ -127,7 +127,7 @@ router.use("/addPastGame", async function (req, res, next) {
   return;
 }
 
-if( users_utils.isUserAdmin(req.session.user_id) != true ){
+if( await users_utils.isUserAdmin(req.session.user_id) != true ){
   res.status(401).send("user not have permission ");
   return;
 }
@@ -152,6 +152,7 @@ if( users_utils.isUserAdmin(req.session.user_id) != true ){
   res.status(400).send( " invalid teams names ");
   return ;
 }
+
 
  const all_users = await users_access.getUserNames();
 
