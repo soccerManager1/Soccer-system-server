@@ -17,8 +17,9 @@ async function markMatchAsFavorite( user_id, match_id ){
 }
 
 
-async function getFavoriteMatches(user_id) {
-  const match_ids =users_access.getFavoriteMatches(user_id)
+async function getFavoriteMatches(username) {
+
+  const match_ids = await users_access.getFavoriteMatches(username)
   return match_ids;
 }
 

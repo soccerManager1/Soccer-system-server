@@ -17,13 +17,23 @@ async function getAllMatches(){
     return matches;
 }
 
-async function getMatchesById(match_id){
+async function getMatchesById(ID){
     const match = await DButils.execQuery(
         `SELECT *
          FROM dbo.Matches
-         WHERE ID = '${match_id}'`
+         WHERE ID = '${ID}'`
     );
     return match
+}
+
+
+async function getFavoriteMatches(username){
+    const matchArray = await DButils.execQuery(
+        `SELECT *
+         FROM dbo.MatchesUsers
+         WHERE ID = '${username}'`
+    );
+    return matchArray;
 }
 
 
@@ -57,7 +67,7 @@ async function updateMatchEvents(match_id, events){
     return true;
 }
 
-
+exports.getFavoriteMatches = getFavoriteMatches;
 exports.getAllMatches = getAllMatches;
 exports.getAllMatchesByTeam = getAllMatchesByTeam;
 exports.insertFutureGame = insertFutureGame;

@@ -86,10 +86,9 @@ async function getPastGames(teamName){
 
 async function getMatchById(match_id){
     if ( !match_id ){return;}
-  
-    result = []
-    const match =  matches_access.getMatchesById(match_id)
-    return match;
+
+    const matchArray = await matches_access.getMatchesById(match_id)
+    return matchArray;
    }
    
 async function updateScore(match_id, homeScore, awayScore){

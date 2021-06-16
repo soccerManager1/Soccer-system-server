@@ -67,18 +67,19 @@ router.post("/favoriteMatchs", async (req, res, next) => {
 });
 
 
-router.get("/favoriteMatchs", async (req, res, next) => {
+router.get("/favoriteMatches", async (req, res, next) => {
   try {
-    const user_id = req.session.user_id;
-    let favorite_matches = {};
-    const match_ids = await users_utils.getFavoriteMatches(match_id);
-    let matchs_array = [];
-    match_ids.map((match_id)=>{
-      const match = matches_utils.getMatchById(match_id);
-      if (match){matchs_array.push(match)}
-    });
+  //  console.log("***************************************************");
+  //  const user_id = req.session.user_id;
+  //  let favorite_matches = {};
+  //  const match_ids = await users_utils.getFavoriteMatches(user_id);
+  //  let matchs_array = [];
+  //  match_ids.map((match_id)=>{
+  //    const match = matches_utils.getMatchById(match_id);
+  //    if (match){matchs_array.push(match)}
+  //  });
 
-    res.status(200).send(matchs_array);
+    res.status(200).send("alive");
   } catch (error) {
     next(error);
   }

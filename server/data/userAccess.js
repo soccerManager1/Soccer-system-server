@@ -58,10 +58,14 @@ async function getFavoritePlayers(user_id){
       return player_ids;
 }
 
-async function getFavoriteMatches(user_id){
+async function getFavoriteMatches(username){
+    console.log("*****************************************************");
+    console.log(username);
+    console.log("*****************************************************");
     const match_ids = await DButils.execQuery(
-        `select match_id from dbo.FavoriteMatches
-         where user_id='${user_id}'`
+        `select match_id
+         from dbo.FavoriteMatches
+         where user_id = '${username}'`
       );
       return match_ids;
 }

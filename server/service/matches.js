@@ -262,6 +262,42 @@ router.post("/addPastGame", async (req, res, next) => {
     }
   });
 
+  async function getMatches(match_ids){
+    
+  }
+
+
+  router.get("/favoriteMatches", async (req, res, next) => {
+    try {
+      const user_id = req.session.user_id;
+      console.log(user_id);
+      let favorite_matches = {};
+      const match_ids = await users_utils.getFavoriteMatches(user_id);
+      matchs_array = [];
+      for (let i = 0; i< match_ids.length ; i++){
+        id = match_ids[i].match_id;
+        const match = await matches_utils.getMatchById(id);
+        if (match){
+          for (let j = 0; j < match.length ; j++){
+            matchs_array.push(match[j]);
+          }
+        }
+      }
+      console.log(matchs_array)
+      res.status(200).send(matchs_array);
+    } catch (error) {
+      next(error);
+    }
+  });
+  
+  
+
+  
+  
+
+
+
+
   router.get("/getAllFutureGames", async (req, res, next) => {
     
     try {
